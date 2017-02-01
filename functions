@@ -1,0 +1,34 @@
+function gitagent() {
+
+  SSHAGENT=/usr/bin/ssh-agent
+  SSHAGENTARGS="-s"
+  if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
+    eval `$SSHAGENT $SSHAGENTARGS`
+    trap "kill $SSH_AGENT_PID" 0
+    /usr/bin/ssh-add ~/.ssh/gitlab
+  fi
+}
+
+function test_cron() {
+  env -i SHELL=/bin/bash PATH=/sbin:/bin:/usr/sbin:/usr/bin MAILTO=root HOME=/ bash -c "$*" < /dev/null"
+}
+
+function hexdate {
+  echo "`date -d @$((0x$1)) +%c`"
+}
+
+git-history-tree () {
+    FILES="$(git ls-tree -r --name-only HEAD .)"
+    MAXLEN=0
+    IFS="$(printf "\n\b")"
+    for f in $FILES; do
+      if [ ${#f} -gt $MAXLEN ]; then
+        MAXLEN=${#f}
+      fi
+    done
+
+    for f in $FILES; do
+        str="$(git log -1 --pretty=format:"%C(green)%cr%Creset %x09 %C(cyan)%h%Creset %s %C(yellow)(%cn)%Creset" $f)"
+        printf "%-${MAXLEN}s -- %s\n" "$f" "$str"
+    done
+}
