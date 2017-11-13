@@ -1,0 +1,30 @@
+[user]
+    email = mgriffin@griftech.net
+    name = Mike Griffin
+    
+[core]
+    editor = vim
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    filemode = false
+
+[color]
+    ui = true
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    tool = vimdiff
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = red
+[push]
+    default = matching
